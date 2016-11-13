@@ -30,7 +30,7 @@ class CameraController:
 class FakeCameraController (CameraController):
 
     def takePicture(self, photoset):
-        source_path = self.STUB_IMAGE_FOLDER + '/' + str(len(photoset['photos']) + 1) + self.IMAGE_EXTENSION
-        target_path = self.CAPTURE_FOLDER + '/' + str(len(photoset['photos']) + 1) + self.IMAGE_EXTENSION
+        source_path = os.path.join(self.PWD, self.STUB_IMAGE_FOLDER, str(len(photoset['photos']) + 1) + self.IMAGE_EXTENSION)
+        target_path = os.path.join(self.PWD, self.CAPTURE_FOLDER, str(len(photoset['photos']) + 1) + self.IMAGE_EXTENSION)
         shutil.copyfile(source_path, target_path)
         photoset['photos'].append(target_path)

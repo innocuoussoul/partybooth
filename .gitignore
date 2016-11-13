@@ -1,8 +1,7 @@
 # Project related stuff
 captures/
 temp/
-generated/
-overlays/
+photos/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

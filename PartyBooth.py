@@ -1,16 +1,15 @@
-import os
 import uuid
 
-from lib.CameraController import CameraController, FakeCameraController
+from constants import *
+from lib.CameraController import FakeCameraController
 from lib.CollageGenerator import CollageGenerator
 
-PWD = os.path.abspath(os.path.dirname(__file__))
 
-
-class FunBox:
+class PartyBooth:
     def __init__(self):
         self.camera_controller = None
         self.collage_generator = None
+        self.prepare_directory_structure()
 
     def shoot_sequence(self, photoset):
         for i in range(4):
@@ -22,6 +21,18 @@ class FunBox:
     def set_collage_generator(self, controller):
         self.collage_generator = controller
 
+    def prepare_directory_structure(self):
+        self.create_folder(CAPTURE_FOLDER)
+        self.create_folder(TEMP_FOLDER)
+        self.create_folder(PHOTOS_FOLDER)
+
+    def create_folder(self, path):
+        try:
+            os.makedirs(path)
+        except OSError:
+            if not os.path.isdir(path):
+                raise
+
     @staticmethod
     def create_photoset():
         guid = uuid.uuid4().hex[:16]
@@ -29,7 +40,7 @@ class FunBox:
 
 
 def main():
-    app = FunBox()
+    app = PartyBooth()
     app.set_camera_controller(FakeCameraController(PWD))
     # app.set_camera_controller(CameraController(PWD))
     app.set_collage_generator(CollageGenerator)
