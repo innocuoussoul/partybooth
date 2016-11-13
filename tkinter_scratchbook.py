@@ -30,7 +30,7 @@ class Window(Frame):
         self.imageButtonText = StringVar()
         self.imageButtonText.set("Tap to take photo!")
         self.imageButton = Label(self.buttonFrame, fg='white', bg='red', borderwidth=10,
-                                 textvariable=self.imageButtonText, font=("Helvetica", 80))
+                                 textvariable=self.imageButtonText, font=("Sans", 80))
         self.imageButton.bind("<Button-1>", self.showImage)
         self.imageButton.grid(sticky=N + S + E + W)
 
@@ -48,6 +48,9 @@ class Window(Frame):
         self.imageButtonText.set("Smile!")
         self.imageButton.update()
         time.sleep(1)
+
+        self.imageButtonText.set("Processing Image...")
+        self.imageButton.update()
 
         load = Image.open(os.path.join("test","images","1.jpg"))
         print(load.format, load.size, load.mode)
