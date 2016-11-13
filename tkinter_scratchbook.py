@@ -1,6 +1,7 @@
 import os
 import time
 from Tkinter import *
+
 from PIL import Image, ImageTk
 
 
@@ -23,12 +24,13 @@ class Window(Frame):
         # quitButton.place(x=0,y=0)
 
 
-        buttonFrame = Frame(root, width='700', height='740')
-        buttonFrame.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.buttonFrame = Frame(root, width='700', height='740')
+        self.buttonFrame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         self.imageButtonText = StringVar()
         self.imageButtonText.set("Tap to take photo!")
-        self.imageButton = Label(buttonFrame, fg='white', bg='red', borderwidth=10, textvariable=self.imageButtonText, font=("Helvetica", 80))
+        self.imageButton = Label(self.buttonFrame, fg='white', bg='red', borderwidth=10,
+                                 textvariable=self.imageButtonText, font=("Helvetica", 80))
         self.imageButton.bind("<Button-1>", self.showImage)
         self.imageButton.grid(sticky=N + S + E + W)
 
@@ -49,12 +51,13 @@ class Window(Frame):
 
         load = Image.open(os.path.join("test","images","1.jpg"))
         print(load.format, load.size, load.mode)
-        load = load.resize((700,466),Image.LANCZOS)
+        load = load.resize((700, 466), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(image=load)
         imageLabel = Label(root,image=render,padx=0,pady=0,borderwidth=5,background='white')
         imageLabel.image = render
         imageLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
         imageLabel.bind("<Button-1>", self.hideImage)
+        self.buttonFrame.destroy()
 
     def hideImage(self, event):
         print('hideImage')
@@ -62,7 +65,8 @@ class Window(Frame):
         event.widget.destroy()
 
 root = Tk()
-root.geometry("800x480")
+# root.geometry("800x480")
+root.attributes("-fullscreen", True)
 root.image = ImageTk.PhotoImage(file='resources/images/splash.png')
 background = Label(root, image = root.image)
 background.place(relx=0.5, rely=0.5, anchor=CENTER)
