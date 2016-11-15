@@ -9,3 +9,5 @@ TEMP_FOLDER = os.path.join(PWD, "temp")
 PHOTOS_FOLDER = os.path.join(PWD, "photos")
 
 STUB_FOLDER = os.path.join(PWD, "test")
+
+TITLE_FONT = ("Helvetica", 18, "bold")

@@ -1,53 +1,68 @@
-import uuid
+# import tkinter as tk   # python3
+import Tkinter as tk   # python
 
-from constants import *
-from lib.CameraController import FakeCameraController
-from lib.CollageGenerator import CollageGenerator
+from PIL import Image, ImageTk
+
+from lib.pages.CountDownPage import CountDownPage
+from lib.pages.PhotoReviewPage import PhotoReviewPage
+from lib.pages.StartPage import StartPage
+
+class PartyBooth(tk.Tk):
+
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        self.geometry("800x480")
+        #self.attributes("-fullscreen", True)
+
+        image = ImageTk.PhotoImage(file='resources/images/splash.png')
+        background = tk.Label(self, image=image)
+        background.image = image
+        background.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        # the container is where we'll stack a bunch of frames
+        # on top of each other, then the one we want visible
+        # will be raised above the others, or grid.remove()d
+        self.container = tk.Frame(self)
+        #container.pack(side="top", fill="both", expand=True)
+        self.container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
+        #container.grid_propagate(0)
+
+        self.frames = {}
+        for F in (StartPage, CountDownPage, PhotoReviewPage):
+            page_name = F.__name__
+            frame = F(parent=self.container, controller=self)
+            self.frames[page_name] = frame
+
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame("StartPage")
+        #background.lower()
+
+    def show_frame(self, page_name):
+        '''Show a frame for the given page name'''
+        # only raise frame in question leaving the rest untouched
+        #frame = self.frames[page_name]
+        #frame.tkraise()
+
+        for frame in self.frames.values():
+            frame.grid_remove()
+        frame = self.frames[page_name]
+        frame.grid()
+        self.update()
+        frame.event_generate("<<FRAME_ACTIVATED>>")
+        return frame
 
 
-class PartyBooth:
-    def __init__(self):
-        self.camera_controller = None
-        self.collage_generator = None
-        self.prepare_directory_structure()
+    def startCountDown(self):
+        page = self.show_frame(CountDownPage.__name__)
+        #page.countDown()
 
-    def shoot_sequence(self, photoset):
-        for i in range(4):
-            self.camera_controller.takePicture(photoset)
-
-    def set_camera_controller(self, controller):
-        self.camera_controller = controller
-
-    def set_collage_generator(self, controller):
-        self.collage_generator = controller
-
-    def prepare_directory_structure(self):
-        self.create_folder(CAPTURE_FOLDER)
-        self.create_folder(TEMP_FOLDER)
-        self.create_folder(PHOTOS_FOLDER)
-
-    def create_folder(self, path):
-        try:
-            os.makedirs(path)
-        except OSError:
-            if not os.path.isdir(path):
-                raise
-
-    @staticmethod
-    def create_photoset():
-        guid = uuid.uuid4().hex[:16]
-        return {'id': guid, 'photos': []}
-
-
-def main():
+if __name__ == "__main__":
     app = PartyBooth()
-    app.set_camera_controller(FakeCameraController(PWD))
-    # app.set_camera_controller(CameraController(PWD))
-    app.set_collage_generator(CollageGenerator)
-    photoset = app.create_photoset()
-    app.shoot_sequence(photoset)
-    print(photoset)
-
-
-if __name__ == '__main__':
-    main()
+    app.mainloop()
