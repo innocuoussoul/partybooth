@@ -1,15 +1,16 @@
 import Tkinter as tk
 import os
 import logging
+import subprocess
 
 from PIL import ImageTk, Image
 
 import constants as CONSTANTS
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 class PhotoReviewPage(tk.Frame):
+    logger = logging.getLogger("PhotoReviewPage")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -26,10 +27,23 @@ class PhotoReviewPage(tk.Frame):
 
     # TODO has to be refactored intro controller
     def displayLastPhoto(self, photoset):
-        image_path = photoset['thumbs'][len(photoset['thumbs'])-1]
-        logger.info("Loading Image " + image_path)
-        load = Image.open(os.path.join(CONSTANTS.CAPTURE_FOLDER, image_path))
-        logger.info("Image Format: (%s - %s - %s)" % (load.format, load.size, load.mode))
+
+        photo_path = photoset['photos'][len(photoset['thumbs']) - 1]
+
+        thumb_filename = "%s_%s_thumb.jpg" % (photoset['id'], len(photoset['photos']))
+        thumb_path = os.path.join(CONSTANTS.PWD, CONSTANTS.TEMP_FOLDER, thumb_filename)
+
+        self.logger.info("Creating Thumbnail " + thumb_path)
+        subprocess.check_call(['convert', photo_path, '-strip', '-thumbnail', '700', '-quality', '80', thumb_path])
+        if os.path.isfile(thumb_path):
+            photoset['thumbs'].append(thumb_path)
+            self.logger.info("Added Thumbnail to Photoset " + thumb_path)
+        else:
+            self.logger.error("Error while creating thumbnail: " + thumb_path)
+
+        self.logger.info("Loading Thumbnail " + thumb_path)
+        load = Image.open(os.path.join(CONSTANTS.CAPTURE_FOLDER, thumb_path))
+        self.logger.info("Thumbnail Format: (%s - %s - %s)" % (load.format, load.size, load.mode))
 
         render = ImageTk.PhotoImage(image=load)
 
@@ -43,5 +57,5 @@ class PhotoReviewPage(tk.Frame):
 
     def returnToStartPage(self):
         self.imageLabel.pack_forget()
-        self.label.pack(    )
+        self.label.pack()
         self.controller.showFrame('StartPage')
