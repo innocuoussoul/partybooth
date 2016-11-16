@@ -76,7 +76,7 @@ class PartyBooth(tk.Tk):
     @staticmethod
     def createPhotoset():
         guid = uuid.uuid4().hex[:16]
-        return {'id': guid, 'photos': []}
+        return {'id': guid, 'photos': [], 'thumbs': []}
 
     def capturePhoto(self, photoset):
         self.cameraController.takePicture(photoset)

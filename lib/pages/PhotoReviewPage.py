@@ -26,11 +26,11 @@ class PhotoReviewPage(tk.Frame):
 
     # TODO has to be refactored intro controller
     def displayLastPhoto(self, photoset):
-
-        load = Image.open(os.path.join(CONSTANTS.CAPTURE_FOLDER, photoset['photos'][len(photoset['photos'])-1]))
+        image_path = photoset['thumbs'][len(photoset['thumbs'])-1]
+        logger.info("Loading Image " + image_path)
+        load = Image.open(os.path.join(CONSTANTS.CAPTURE_FOLDER, image_path))
         logger.info("Image Format: (%s - %s - %s)" % (load.format, load.size, load.mode))
 
-        load = load.resize((700, 466), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(image=load)
 
         self.imageLabel.image = render
