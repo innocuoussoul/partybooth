@@ -12,7 +12,7 @@ class CountDownPage(tk.Frame):
         self.pack_propagate(0)
         self.controller = controller
 
-        self.countdownLength = 1
+        self.countdownLength = 3
 
         self.countdownText = tk.StringVar()
         self.countdownText.set(self.countdownLength)

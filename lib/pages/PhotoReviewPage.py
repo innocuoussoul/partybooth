@@ -39,7 +39,7 @@ class PhotoReviewPage(tk.Frame):
         self.label.pack_forget()
         self.imageLabel.pack()
 
-        self.after(3000, self.returnToStartPage)
+        self.after(5000, self.returnToStartPage)
 
     def returnToStartPage(self):
         self.imageLabel.pack_forget()
