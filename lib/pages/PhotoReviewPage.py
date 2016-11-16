@@ -19,7 +19,7 @@ class PhotoReviewPage(tk.Frame):
         self.imageLabel.bind("<Button-1>", lambda event: controller.showFrame('StartPage'))
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Processing Image...", font=("Sans", CONSTANTS.FONT_SIZE_BIG))
+                              text="Processing Image...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.bind("<Button-1>", lambda event: self.controller.startCountDown())
         self.label.pack(fill=tk.BOTH, expand=True)
 

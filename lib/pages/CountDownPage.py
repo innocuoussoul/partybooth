@@ -1,16 +1,14 @@
 import Tkinter as tk
-
 import time
 
 import constants as CONSTANTS
 
 
 class CountDownPage(tk.Frame):
-
     COUNTDOWN_TICK_LENGTH = 1
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent,width=400, height=120)
+        tk.Frame.__init__(self, parent, width=400, height=120)
         self.pack_propagate(0)
         self.controller = controller
 
@@ -19,14 +17,13 @@ class CountDownPage(tk.Frame):
         self.countdownText = tk.StringVar()
         self.countdownText.set(self.countdownLength)
         self.countdownLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                                       textvariable=self.countdownText, font=("Sans", CONSTANTS.FONT_SIZE_BIG))
+                                       textvariable=self.countdownText, font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
 
-        self.countdownLabel.pack(fill=tk.BOTH,expand=True)
-        self.bind("<<FRAME_ACTIVATED>>", self.countDown) # Not needed after refactoring
+        self.countdownLabel.pack(fill=tk.BOTH, expand=True)
+        self.bind("<<FRAME_ACTIVATED>>", self.countDown)  # Not needed after refactoring
 
     # TODO has to be refactored intro controller, Pages are only for display and binding controller calls
     def countDown(self, event):
-
         self.countdownText.set("Get ready!")
         self.countdownLabel.update()
         time.sleep(self.COUNTDOWN_TICK_LENGTH)

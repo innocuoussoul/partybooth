@@ -9,6 +9,6 @@ class StartPage(tk.Frame):
         self.controller = controller
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Tap to take photo!", font=("Sans", CONSTANTS.FONT_SIZE_BIG))
+                              text="Tap to take photo!", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.bind("<Button-1>", lambda event: self.controller.startCountDown())
         self.label.pack(fill=tk.BOTH, expand=True)
