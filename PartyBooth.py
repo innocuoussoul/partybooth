@@ -12,6 +12,9 @@ from lib.pages.CountDownPage import CountDownPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 from lib.pages.StartPage import StartPage
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("PartyBooth")
+
 class PartyBooth(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -20,8 +23,8 @@ class PartyBooth(tk.Tk):
 
         self.cameraController = self.createCameraController()
 
-        self.geometry("800x480")
-        # self.attributes("-fullscreen", True)
+        # self.geometry("800x480")
+        self.attributes("-fullscreen", True)
 
         image = ImageTk.PhotoImage(file='resources/images/splash.png')
         background = tk.Label(self, image=image)
@@ -102,9 +105,6 @@ class PartyBooth(tk.Tk):
         else:
             logger.info("USING REAL CAMERA CONTROLLER")
             return CameraController()
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(PartyBooth.__name__)
 
 if __name__ == "__main__":
     app = PartyBooth()

@@ -17,3 +17,5 @@ TEMP_FOLDER = os.path.join(PWD, "temp")
 PHOTOS_FOLDER = os.path.join(PWD, "photos")
 
 STUB_IMAGE_FOLDER = os.path.join(PWD, "test/images")
+
+FONT_SIZE_BIG = 60

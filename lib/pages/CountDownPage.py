@@ -2,7 +2,7 @@ import Tkinter as tk
 
 import time
 
-from constants import TITLE_FONT
+import constants as CONSTANTS
 
 
 class CountDownPage(tk.Frame):
@@ -19,7 +19,7 @@ class CountDownPage(tk.Frame):
         self.countdownText = tk.StringVar()
         self.countdownText.set(self.countdownLength)
         self.countdownLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                                       textvariable=self.countdownText, font=("Sans", 80))
+                                       textvariable=self.countdownText, font=("Sans", CONSTANTS.FONT_SIZE_BIG))
 
         self.countdownLabel.pack(fill=tk.BOTH,expand=True)
         self.bind("<<FRAME_ACTIVATED>>", self.countDown) # Not needed after refactoring

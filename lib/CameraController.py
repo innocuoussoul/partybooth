@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import subprocess
@@ -7,6 +8,7 @@ import constants as CONSTANTS
 
 class CameraController:
     IMAGE_EXTENSION = '.jpg'
+    logger = logging.getLogger("CameraController")
 
     def __init__(self):
         pass
@@ -24,8 +26,7 @@ class CameraController:
         if os.path.isfile(path):
             photoset['photos'].append(path)
         else:
-            print("Error while taking Photo " + path)
-
+            logging.error("Error while taking Photo: " + path)
 
 class FakeCameraController (CameraController):
 

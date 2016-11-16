@@ -1,20 +1,14 @@
 import Tkinter as tk
-
-from constants import TITLE_FONT
-from lib.pages.PhotoReviewPage import PhotoReviewPage
-
+import constants as CONSTANTS
 
 class StartPage(tk.Frame):
-
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        label = tk.Label(self, text="This is the start page", font=TITLE_FONT)
-        label.pack(side="top", fill="x", pady=10)
+        tk.Frame.__init__(self, parent, width=650, height=120)
+        self.pack_propagate(0)
 
-        button1 = tk.Button(self, text="Go to Page One",
-                            command=lambda: controller.startCountDown())
-        button2 = tk.Button(self, text="Go to Page Two",
-                            command=lambda: controller.showFrame(PhotoReviewPage.__name__))
-        button1.pack()
-        button2.pack()
+        self.controller = controller
+
+        self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
+                              text="Tap to take photo!", font=("Sans", CONSTANTS.FONT_SIZE_BIG))
+        self.label.bind("<Button-1>", lambda event: self.controller.startCountDown())
+        self.label.pack(fill=tk.BOTH, expand=True)
