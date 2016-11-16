@@ -1,19 +1,27 @@
 # import tkinter as tk   # python3
-import Tkinter as tk   # python
+import Tkinter as tk  # python
+import os
+import uuid
+import logging
 
-from PIL import Image, ImageTk
+from PIL import ImageTk
 
+import constants as CONSTANTS
+from lib.CameraController import FakeCameraController, CameraController
 from lib.pages.CountDownPage import CountDownPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 from lib.pages.StartPage import StartPage
 
 class PartyBooth(tk.Tk):
-
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
+        self.prepare_directory_structure()
+
+        self.cameraController = self.createCameraController()
+
         self.geometry("800x480")
-        #self.attributes("-fullscreen", True)
+        # self.attributes("-fullscreen", True)
 
         image = ImageTk.PhotoImage(file='resources/images/splash.png')
         background = tk.Label(self, image=image)
@@ -24,11 +32,11 @@ class PartyBooth(tk.Tk):
         # on top of each other, then the one we want visible
         # will be raised above the others, or grid.remove()d
         self.container = tk.Frame(self)
-        #container.pack(side="top", fill="both", expand=True)
+        # container.pack(side="top", fill="both", expand=True)
         self.container.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
-        #container.grid_propagate(0)
+        # container.grid_propagate(0)
 
         self.frames = {}
         for F in (StartPage, CountDownPage, PhotoReviewPage):
@@ -41,14 +49,15 @@ class PartyBooth(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
-        #background.lower()
+        self.showFrame(StartPage.__name__)
+        # background.lower()
 
-    def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
+    def showFrame(self, page_name):
+        logger.info("Showing Frame: " + page_name)
+        # Show a frame for the given page name
         # only raise frame in question leaving the rest untouched
-        #frame = self.frames[page_name]
-        #frame.tkraise()
+        # frame = self.frames[page_name]
+        # frame.tkraise()
 
         for frame in self.frames.values():
             frame.grid_remove()
@@ -58,10 +67,44 @@ class PartyBooth(tk.Tk):
         frame.event_generate("<<FRAME_ACTIVATED>>")
         return frame
 
-
     def startCountDown(self):
-        page = self.show_frame(CountDownPage.__name__)
-        #page.countDown()
+        self.showFrame(CountDownPage.__name__)
+
+    @staticmethod
+    def createPhotoset():
+        guid = uuid.uuid4().hex[:16]
+        return {'id': guid, 'photos': []}
+
+    def capturePhoto(self, photoset):
+        self.cameraController.takePicture(photoset)
+        frame = self.showFrame(PhotoReviewPage.__name__)
+        frame.displayLastPhoto(photoset)
+
+    def prepare_directory_structure(self):
+        self.create_folder(CONSTANTS.CAPTURE_FOLDER)
+        self.create_folder(CONSTANTS.TEMP_FOLDER)
+        self.create_folder(CONSTANTS.PHOTOS_FOLDER)
+
+    def create_folder(self, path):
+        try:
+            os.makedirs(path)
+            self.logger.info("Created folder " + path)
+        except OSError:
+            if not os.path.isdir(path):
+                raise
+
+    def createCameraController(self):
+        useFake = os.environ.get(CONSTANTS.ENV_USE_CAMERA_STUB)
+
+        if useFake:
+            logger.warn("USE_CAMERA_STUB IS ACTIVE!")
+            return FakeCameraController()
+        else:
+            logger.info("USING REAL CAMERA CONTROLLER")
+            return CameraController()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(PartyBooth.__name__)
 
 if __name__ == "__main__":
     app = PartyBooth()
