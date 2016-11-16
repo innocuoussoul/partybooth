@@ -3,7 +3,7 @@ import constants as CONSTANTS
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=650, height=120)
+        tk.Frame.__init__(self, parent, width=780, height=140)
         self.pack_propagate(0)
 
         self.controller = controller

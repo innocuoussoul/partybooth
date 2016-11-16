@@ -8,7 +8,7 @@ class CountDownPage(tk.Frame):
     COUNTDOWN_TICK_LENGTH = 1
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=400, height=120)
+        tk.Frame.__init__(self, parent, width=500, height=140)
         self.pack_propagate(0)
         self.controller = controller
 
