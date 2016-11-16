@@ -34,7 +34,7 @@ class CameraController:
             self.logging.error("Error while taking Photo: " + path)
 
         self.logger.info("Creating Thumbnail " + thumb_path)
-        subprocess.check_call(['convert', path, '-strip', '-thumbnail \'700>\'', '-quality', '80', thumb_path])
+        subprocess.check_call(['convert', path, '-strip', '-thumbnail', '700', '-quality', '80', thumb_path])
         if os.path.isfile(thumb_path):
             photoset['thumbs'].append(thumb_path)
             self.logger.info("Added Thumbnail to Photoset " + thumb_path)
