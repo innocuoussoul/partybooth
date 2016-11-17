@@ -10,6 +10,7 @@ from PIL import ImageTk
 
 import constants as CONSTANTS
 from lib.CameraController import FakeCameraController, CameraController
+from lib.PartyBoothUiController import PartyBoothController
 from lib.pages.CountDownPage import CountDownPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 from lib.pages.StartPage import StartPage
@@ -21,9 +22,9 @@ class PartyBooth(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        self.prepare_directory_structure()
+        self.controller = PartyBoothController(self)
 
-        self.cameraController = self.createCameraController()
+        self.controller.prepare_directory_structure()
 
         # self.geometry("800x480")
         self.attributes("-fullscreen", True)
@@ -46,7 +47,7 @@ class PartyBooth(tk.Tk):
         self.frames = {}
         for F in (StartPage, CountDownPage, PhotoReviewPage):
             page_name = F.__name__
-            frame = F(parent=self.container, controller=self)
+            frame = F(parent=self.container, controller=self.controller)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;
@@ -72,41 +73,6 @@ class PartyBooth(tk.Tk):
         frame.event_generate("<<FRAME_ACTIVATED>>")
         return frame
 
-    def startCountDown(self):
-        self.showFrame(CountDownPage.__name__)
-
-    @staticmethod
-    def createPhotoset():
-        guid = uuid.uuid4().hex[:16]
-        return {'id': guid, 'photos': [], 'thumbs': []}
-
-    def capturePhoto(self, photoset):
-        self.cameraController.takePicture(photoset)
-        frame = self.showFrame(PhotoReviewPage.__name__)
-        frame.displayLastPhoto(photoset)
-
-    def prepare_directory_structure(self):
-        self.create_folder(CONSTANTS.CAPTURE_FOLDER)
-        self.create_folder(CONSTANTS.TEMP_FOLDER)
-        self.create_folder(CONSTANTS.PHOTOS_FOLDER)
-
-    def create_folder(self, path):
-        try:
-            os.makedirs(path)
-            self.logger.info("Created folder " + path)
-        except OSError:
-            if not os.path.isdir(path):
-                raise
-
-    def createCameraController(self):
-        useFake = os.environ.get(CONSTANTS.ENV_USE_CAMERA_STUB)
-
-        if useFake:
-            logger.warn("USE_CAMERA_STUB IS ACTIVE!")
-            return FakeCameraController()
-        else:
-            logger.info("USING REAL CAMERA CONTROLLER")
-            return CameraController()
 
 if __name__ == "__main__":
     app = PartyBooth()
