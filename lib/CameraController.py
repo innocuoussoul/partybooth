@@ -21,14 +21,14 @@ class CameraController:
         path = os.path.join(CONSTANTS.PWD, CONSTANTS.CAPTURE_FOLDER, filename)
 
         self.logger.info("Taking Photo...")
-        subprocess.call(['gphoto2', '--capture-image-and-download', '--force-overwrite', '--filename', path],
+        subprocess.call(['gphoto2', '--capture-image-and-download', '--keep', '--force-overwrite', '--filename', path],
                         stdout=False)
 
         if os.path.isfile(path):
             photoset['photos'].append(path)
             self.logger.info("Added Photo to Photoset " +  path)
         else:
-            self.logging.error("Error while taking Photo: " + path)
+            self.logger.error("Error while taking Photo: " + path)
 
 class FakeCameraController (CameraController):
 
