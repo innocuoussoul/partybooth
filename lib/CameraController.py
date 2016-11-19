@@ -11,7 +11,10 @@ class CameraController:
     logger = logging.getLogger("CameraController")
 
     def __init__(self):
-        pass
+        self.logger.info("Configuring Camera...")
+        subprocess.call(['gphoto2', '--set-config', 'capturetarget=1'])
+        subprocess.call(['gphoto2', '--set-config', 'imageformat=2'])
+        self.logger.info("Configuring Camera completed")
 
     def takePicture(self, photoset):
         # shutil.copyfile(self.STUB_IMAGE_FOLDER + '/' + str(aufnahmeNummer) + self.IMAGE_EXTENSION,
@@ -21,8 +24,7 @@ class CameraController:
         path = os.path.join(CONSTANTS.PWD, CONSTANTS.CAPTURE_FOLDER, filename)
 
         self.logger.info("Taking Photo...")
-        subprocess.call(['gphoto2', '--capture-image-and-download', '--keep', '--force-overwrite', '--filename', path],
-                        stdout=False)
+        subprocess.call(['gphoto2', '--capture-image-and-download', '--keep', '--force-overwrite', '--filename', path])
 
         if os.path.isfile(path):
             photoset['photos'].append(path)
