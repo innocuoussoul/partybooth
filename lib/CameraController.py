@@ -14,6 +14,7 @@ class CameraController:
         self.logger.info("Configuring Camera...")
         subprocess.call(['gphoto2', '--set-config', 'capturetarget=1'])
         subprocess.call(['gphoto2', '--set-config', 'imageformat=2'])
+        subprocess.call(['gphoto2', '--set-config', 'autopoweroff=0'])
         self.logger.info("Configuring Camera completed")
 
     def takePicture(self, photoset):
