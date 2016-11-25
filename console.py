@@ -1,7 +1,7 @@
 import uuid
 
 from constants import *
-from lib.CameraController import FakeCameraController
+from lib.CameraAdapter import FakeCameraAdapter
 from lib.CollageGenerator import CollageGenerator
 
 
@@ -41,7 +41,7 @@ class PartyBooth:
 
 def main():
     app = PartyBooth()
-    app.set_camera_controller(FakeCameraController(PWD))
+    app.set_camera_controller(FakeCameraAdapter(PWD))
     # app.set_camera_controller(CameraController(PWD))
     app.set_collage_generator(CollageGenerator)
     photoset = app.create_photoset()

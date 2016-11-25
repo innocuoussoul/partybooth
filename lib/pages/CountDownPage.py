@@ -20,10 +20,8 @@ class CountDownPage(tk.Frame):
                                        textvariable=self.countdownText, font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
 
         self.countdownLabel.pack(fill=tk.BOTH, expand=True)
-        self.bind("<<FRAME_ACTIVATED>>", self.countDown)  # Not needed after refactoring
 
-    # TODO has to be refactored intro controller, Pages are only for display and binding controller calls
-    def countDown(self, event):
+    def countDown(self):
         self.countdownText.set("Get ready!")
         self.countdownLabel.update()
         time.sleep(self.COUNTDOWN_TICK_LENGTH)
@@ -38,6 +36,3 @@ class CountDownPage(tk.Frame):
         self.countdownText.set("Smile!")
         self.countdownLabel.update()
         time.sleep(self.COUNTDOWN_TICK_LENGTH)
-
-        photoset = self.controller.createPhotoset()
-        self.controller.capturePhoto(photoset)

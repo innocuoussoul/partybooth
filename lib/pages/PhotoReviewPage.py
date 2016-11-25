@@ -7,8 +7,6 @@ from PIL import ImageTk, Image
 
 import constants as CONSTANTS
 
-logging.basicConfig(level=logging.INFO)
-
 class PhotoReviewPage(tk.Frame):
     logger = logging.getLogger("PhotoReviewPage")
 
@@ -17,7 +15,7 @@ class PhotoReviewPage(tk.Frame):
         self.controller = controller
 
         self.imageLabel = tk.Label(self, padx=0, pady=0, borderwidth=5, background='white')
-        self.imageLabel.bind("<Button-1>", lambda event: controller.showFrame('StartPage'))
+        self.imageLabel.bind("<Button-1>", lambda event: controller.showPage('StartPage'))
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
                               text="Processing...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
@@ -53,9 +51,10 @@ class PhotoReviewPage(tk.Frame):
         self.label.pack_forget()
         self.imageLabel.pack()
 
-        self.after(5000, self.returnToStartPage)
+        self.after_id = self.after(5000, self.returnToStartPage)
 
     def returnToStartPage(self):
         self.imageLabel.pack_forget()
+        self.after_cancel(self.after_id)
         self.label.pack()
-        self.controller.showFrame('StartPage')
+        self.controller.showPage('StartPage')

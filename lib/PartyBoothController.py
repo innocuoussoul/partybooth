@@ -2,23 +2,27 @@ import logging
 import os
 import uuid
 
+import gphoto2 as gp
+
 import constants as CONSTANTS
-from lib.CameraController import FakeCameraController, CameraController
+from lib.CameraAdapter import FakeCameraAdapter, CameraAdapter
 from lib.pages.CountDownPage import CountDownPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 
 
 class PartyBoothController():
-    logger = logging.getLogger("PartyBoothController")
+    logger = logging.getLogger("PartyBooth.PartyBoothController")
 
     def __init__(self, partyBoothUI):
         self.partyBoothUI = partyBoothUI
-        self.logger.info("Initialized")
-
+        self.logger.debug("Initialized")
         self.cameraController = self.createCameraController()
 
     def startCountDown(self):
-        self.partyBoothUI.showFrame(CountDownPage.__name__)
+        page = self.partyBoothUI.showPage(CountDownPage.__name__)
+        page.countDown()
+        photoset = self.createPhotoset()
+        self.capturePhoto(photoset)
 
     @staticmethod
     def createPhotoset():
@@ -27,7 +31,7 @@ class PartyBoothController():
 
     def capturePhoto(self, photoset):
         self.cameraController.takePicture(photoset)
-        frame = self.partyBoothUI.showFrame(PhotoReviewPage.__name__)
+        frame = self.partyBoothUI.showPage(PhotoReviewPage.__name__)
         frame.displayLastPhoto(photoset)
 
     def prepare_directory_structure(self):
@@ -48,10 +52,27 @@ class PartyBoothController():
 
         if useFake:
             self.logger.warn("USE_CAMERA_STUB IS ACTIVE!")
-            return FakeCameraController()
+            return FakeCameraAdapter()
         else:
             self.logger.info("USING REAL CAMERA CONTROLLER")
-            return CameraController()
+            return CameraAdapter()
 
-    def showFrame(self, frame):
-        self.partyBoothUI.showFrame(frame)
+    def showPage(self, frame):
+        return self.partyBoothUI.showPage(frame)
+
+    def connectToCamera(self):
+        frame = self.showPage("ConnectionPage")
+        self.checkCameraConnection(frame)
+
+    def checkCameraConnection(self, frame):
+        self.logger.info("Checking camera connection...")
+
+        try:
+            self.cameraController.connectToCamera()
+            self.showPage("StartPage")
+        except gp.GPhoto2Error as ex:
+            if ex.code == gp.GP_ERROR_MODEL_NOT_FOUND:
+                self.logger.info("Could not connect to camera. Retrying ...")
+                frame.after(2000, self.checkCameraConnection, frame)
+            else:
+                raise
