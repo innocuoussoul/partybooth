@@ -17,7 +17,8 @@ class CountDownPage(tk.Frame):
         self.countdownText = tk.StringVar()
         self.countdownText.set(self.countdownLength)
         self.countdownLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                                       textvariable=self.countdownText, font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
+                                       textvariable=self.countdownText,
+                                       font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
 
         self.countdownLabel.pack(fill=tk.BOTH, expand=True)
 
@@ -35,4 +36,4 @@ class CountDownPage(tk.Frame):
 
         self.countdownText.set("Smile!")
         self.countdownLabel.update()
-       # time.sleep(self.COUNTDOWN_TICK_LENGTH)
+        # time.sleep(self.COUNTDOWN_TICK_LENGTH)

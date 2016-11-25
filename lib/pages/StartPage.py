@@ -1,5 +1,7 @@
 import Tkinter as tk
+
 import constants as CONSTANTS
+
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):

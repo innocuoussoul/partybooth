@@ -31,7 +31,6 @@ class Window(Frame):
         self.initButtons()
         self.showButtons()
 
-
     def initButtons(self):
         self.buttonFrame = Frame(self.root, width='700', height='740')
 
@@ -55,7 +54,7 @@ class Window(Frame):
         self.countdownText.set("Tap to take photo!")
 
         self.countdownLabel = Label(self.master, fg='white', bg='red', borderwidth=10,
-                                 textvariable=self.countdownText, font=("Sans", 80))
+                                    textvariable=self.countdownText, font=("Sans", 80))
 
         self.countdownLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
@@ -93,6 +92,7 @@ class Window(Frame):
         self.imageLabel.destroy()
         self.initButtons()
         self.showButtons()
+
 
 root = Tk()
 # root.geometry("800x480")

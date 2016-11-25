@@ -7,15 +7,14 @@ import logging
 from PIL import ImageTk
 
 from lib.PartyBoothController import PartyBoothController
-from lib.pages.ErrorPage import ErrorPage
 from lib.pages.ConnectionPage import ConnectionPage
 from lib.pages.CountDownPage import CountDownPage
+from lib.pages.ErrorPage import ErrorPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 from lib.pages.StartPage import StartPage
 
 
 class PartyBooth(tk.Tk):
-
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.logger = logging.getLogger("PartyBooth")
@@ -68,7 +67,6 @@ class PartyBooth(tk.Tk):
         # container.grid_propagate(0)
         return container
 
-
     def registerPages(self):
         for F in (StartPage, CountDownPage, PhotoReviewPage, ConnectionPage, ErrorPage):
             page_name = F.__name__
@@ -86,6 +84,7 @@ class PartyBooth(tk.Tk):
         background.image = image
         background.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
+
 def configureLogging():
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -97,7 +96,7 @@ def configureLogging():
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(formatter)
 
-    #Configure Root Logger
+    # Configure Root Logger
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     logger.addHandler(ch)
@@ -106,11 +105,11 @@ def configureLogging():
     # Configure other Loggers
     logging.getLogger('PartyBooth').setLevel(logging.DEBUG)
 
-    #Configure other Loggers
-    logging.getLogger('gphoto2').setLevel(logging.INFO)
+    # Configure other Loggers
+    logging.getLogger('gphoto2').setLevel(logging.ERROR)
+
 
 if __name__ == "__main__":
     configureLogging()
     app = PartyBooth()
     app.mainloop()
-

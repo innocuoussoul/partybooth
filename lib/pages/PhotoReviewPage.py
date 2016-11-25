@@ -1,11 +1,12 @@
 import Tkinter as tk
-import os
 import logging
+import os
 import subprocess
 
 from PIL import ImageTk, Image
 
 import constants as CONSTANTS
+
 
 class PhotoReviewPage(tk.Frame):
     logger = logging.getLogger("PartyBooth.PhotoReviewPage")
@@ -20,7 +21,6 @@ class PhotoReviewPage(tk.Frame):
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
                               text="Processing...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.pack(fill=tk.BOTH, expand=True)
-
 
     # TODO has to be refactored intro controller
     def displayLastPhoto(self, photoset):
@@ -54,9 +54,9 @@ class PhotoReviewPage(tk.Frame):
         self.logger.debug("Registered after_id: %s" % self.after_id)
 
     def returnToStartPage(self):
-	self.logger.debug("Cancelled after_id: %s" % self.after_id)
+        self.logger.debug("Cancelled after_id: %s" % self.after_id)
         self.after_cancel(self.after_id)
-        
+
         self.imageLabel.pack_forget()
 
         self.label.pack()

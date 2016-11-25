@@ -1,5 +1,4 @@
 class CollageGenerator:
-
     COLLAGE_WIDTH = 1200
     COLLAGE_HEIGHT = 800
     IMAGE_PADDING = 50
@@ -11,4 +10,4 @@ class CollageGenerator:
 
     def createCollage(self, overlay):
         pass
-    # TODO collage creating is next
+        # TODO collage creating is next

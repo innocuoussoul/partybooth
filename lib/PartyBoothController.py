@@ -10,7 +10,7 @@ from lib.pages.CountDownPage import CountDownPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 
 
-class PartyBoothController():
+class PartyBoothController:
     logger = logging.getLogger("PartyBooth.PartyBoothController")
 
     def __init__(self, partyBoothUI):
@@ -72,7 +72,7 @@ class PartyBoothController():
             self.showPage("StartPage")
         except gp.GPhoto2Error as ex:
             if ex.code == gp.GP_ERROR_MODEL_NOT_FOUND:
-                self.logger.info("Could not connect to camera. Retrying ...")
+                self.logger.warn("Could not connect to camera. Retrying ...")
                 frame.after(2000, self.checkCameraConnection, frame)
             else:
                 raise
