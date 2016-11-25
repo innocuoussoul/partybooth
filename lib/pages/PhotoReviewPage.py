@@ -8,18 +8,17 @@ from PIL import ImageTk, Image
 import constants as CONSTANTS
 
 class PhotoReviewPage(tk.Frame):
-    logger = logging.getLogger("PhotoReviewPage")
+    logger = logging.getLogger("PartyBooth.PhotoReviewPage")
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
         self.imageLabel = tk.Label(self, padx=0, pady=0, borderwidth=5, background='white')
-        self.imageLabel.bind("<Button-1>", lambda event: controller.showPage('StartPage'))
+        self.imageLabel.bind("<Button-1>", lambda event: self.returnToStartPage())
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
                               text="Processing...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
-        self.label.bind("<Button-1>", lambda event: self.returnToStartPage())
         self.label.pack(fill=tk.BOTH, expand=True)
 
 
@@ -52,9 +51,13 @@ class PhotoReviewPage(tk.Frame):
         self.imageLabel.pack()
 
         self.after_id = self.after(5000, self.returnToStartPage)
+        self.logger.debug("Registered after_id: %s" % self.after_id)
 
     def returnToStartPage(self):
-        self.imageLabel.pack_forget()
+	self.logger.debug("Cancelled after_id: %s" % self.after_id)
         self.after_cancel(self.after_id)
+        
+        self.imageLabel.pack_forget()
+
         self.label.pack()
         self.controller.showPage('StartPage')

@@ -35,4 +35,4 @@ class CountDownPage(tk.Frame):
 
         self.countdownText.set("Smile!")
         self.countdownLabel.update()
-        time.sleep(self.COUNTDOWN_TICK_LENGTH)
+       # time.sleep(self.COUNTDOWN_TICK_LENGTH)
