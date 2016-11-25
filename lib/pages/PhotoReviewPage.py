@@ -27,7 +27,7 @@ class PhotoReviewPage(tk.Frame):
 
         photo_path = photoset['photos'][len(photoset['thumbs']) - 1]
 
-        thumb_filename = "%s_%s_thumb.jpg" % (photoset['id'], len(photoset['photos']))
+        thumb_filename = "thumb.jpg"
         thumb_path = os.path.join(CONSTANTS.PWD, CONSTANTS.TEMP_FOLDER, thumb_filename)
 
         self.logger.info("Creating Thumbnail " + thumb_path)

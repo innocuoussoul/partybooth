@@ -20,27 +20,23 @@ class CameraAdapter:
         self.camera.init(self.context)
         self._setCaptureTargetToCard()
         self._setImageTypeToJpg()
-        self.logger.info("Connection established!")
+        self.camera.exit(self.context)
+        self.logger.info("Connection successful!")
 
     def takePicture(self, photoset):
-        # shutil.copyfile(self.STUB_IMAGE_FOLDER + '/' + str(aufnahmeNummer) + self.IMAGE_EXTENSION,
-        #                self.CAPTURE_FOLDER + '/' + str(aufnahmeNummer) + self.IMAGE_EXTENSION)
-
         filename = "%s_%s.jpg" % (photoset['id'], len(photoset['photos']) + 1)
-
         target_path = os.path.join(CONSTANTS.PWD, CONSTANTS.CAPTURE_FOLDER, filename)
 
         self.logger.info("Taking Photo...")
+        self.camera.init(self.context)
         # subprocess.call(['gphoto2', '--capture-image-and-download', '--keep', '--force-overwrite', '--filename', target_path])
         camera_path = self.camera.capture(gp.GP_CAPTURE_IMAGE, self.context)
-        # camera_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE, self.context))
         self.logger.info('Image on camera {0}/{1}'.format(camera_path.folder, camera_path.name))
 
-        self.logger.info('Copying image to {0}'.format(target_path))
-        camera_file = gp.check_result(
-            gp.gp_camera_file_get(self.camera, camera_path.folder, camera_path.name, gp.GP_FILE_TYPE_NORMAL,
-                                  self.context))
-        gp.check_result(gp.gp_file_save(camera_file, target_path))
+        self.logger.debug('Copying image to {0}'.format(target_path))
+        camera_file = self.camera.file_get(camera_path.folder, camera_path.name, gp.GP_FILE_TYPE_NORMAL, self.context)
+        camera_file.save(target_path)
+        self.camera.exit(self.context)
 
         if os.path.isfile(target_path):
             photoset['photos'].append(target_path)

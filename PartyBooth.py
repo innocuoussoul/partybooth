@@ -41,7 +41,7 @@ class PartyBooth(tk.Tk):
         # background.lower()
 
     def showPage(self, page_name):
-        self.logger.info("Showing Frame: " + page_name)
+        self.logger.info("Showing '%s'" % page_name)
         # Show a frame for the given page name
         # only raise frame in question leaving the rest untouched
         # frame = self.frames[page_name]
@@ -52,7 +52,7 @@ class PartyBooth(tk.Tk):
         frame = self.frames[page_name]
         frame.grid()
         self.update()
-        frame.event_generate("<<FRAME_ACTIVATED>>")
+        # frame.event_generate("<<FRAME_ACTIVATED>>")
         return frame
 
     def initializePageContainer(self):
