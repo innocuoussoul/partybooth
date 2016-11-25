@@ -52,7 +52,8 @@ class CameraAdapter:
         self._setCameraParameter('capturetarget', 1)
 
     def _setImageTypeToJpg(self):
-        self._setCameraParameter('imagequality', 2)
+        self._setCameraParameter('imageformat', 2)
+        self._setCameraParameter('imageformatcf', 2)
 
     def _setCameraParameter(self, parameter, to_value):
         # get configuration tree
