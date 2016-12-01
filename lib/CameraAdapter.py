@@ -6,7 +6,7 @@ import gphoto2 as gp
 import constants as CONSTANTS
 
 
-class CameraAdapter:
+class CameraAdapter(object):
     IMAGE_EXTENSION = '.jpg'
     logger = logging.getLogger("PartyBooth.CameraAdapter")
 

@@ -6,6 +6,7 @@ import logging
 
 from PIL import ImageTk
 
+import constants as CONSTANTS
 from lib.PartyBoothController import PartyBoothController
 from lib.pages.ConnectionPage import ConnectionPage
 from lib.pages.CountDownPage import CountDownPage
@@ -17,6 +18,7 @@ from lib.pages.StartPage import StartPage
 class PartyBooth(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+        self.configureLogging()
         self.logger = logging.getLogger("PartyBooth")
 
         self.logger.info("####################################################################")
@@ -79,37 +81,36 @@ class PartyBooth(tk.Tk):
             frame.grid(row=0, column=0, sticky="nsew")
 
     def paintBackground(self):
-        image = ImageTk.PhotoImage(file='resources/images/splash.png')
+        image = ImageTk.PhotoImage(file=CONSTANTS.PWD + '/resources/images/splash.png')
         background = tk.Label(self, image=image)
         background.image = image
         background.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
+    @staticmethod
+    def configureLogging():
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-def configureLogging():
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh = logging.FileHandler('partybooth.log')
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(formatter)
 
-    fh = logging.FileHandler('partybooth.log')
-    fh.setLevel(logging.DEBUG)
-    fh.setFormatter(formatter)
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+        ch.setFormatter(formatter)
 
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(formatter)
+        # Configure Root Logger
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+        logger.addHandler(ch)
+        logger.addHandler(fh)
 
-    # Configure Root Logger
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.addHandler(ch)
-    logger.addHandler(fh)
+        # Configure other Loggers
+        logging.getLogger('PartyBooth').setLevel(logging.DEBUG)
 
-    # Configure other Loggers
-    logging.getLogger('PartyBooth').setLevel(logging.DEBUG)
-
-    # Configure other Loggers
-    logging.getLogger('gphoto2').setLevel(logging.ERROR)
+        # Configure other Loggers
+        logging.getLogger('gphoto2').setLevel(logging.ERROR)
 
 
 if __name__ == "__main__":
-    configureLogging()
     app = PartyBooth()
     app.mainloop()

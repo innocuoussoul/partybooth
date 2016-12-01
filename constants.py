@@ -14,7 +14,7 @@ TEMP_FOLDER = os.path.join(PWD, "temp")
 
 PHOTOS_FOLDER = os.path.join(PWD, "photos")
 
-STUB_IMAGE_FOLDER = os.path.join(PWD, "test/images")
+STUB_IMAGE_FOLDER = os.path.join(PWD, "tests/images")
 
 FONT_FACE = "Roboto Condensed"
 FONT_SIZE_BIG = 80

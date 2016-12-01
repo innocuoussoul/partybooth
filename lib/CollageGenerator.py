@@ -1,4 +1,4 @@
-class CollageGenerator:
+class CollageGenerator(object):
     COLLAGE_WIDTH = 1200
     COLLAGE_HEIGHT = 800
     IMAGE_PADDING = 50

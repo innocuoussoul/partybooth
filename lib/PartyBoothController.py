@@ -7,16 +7,17 @@ import gphoto2 as gp
 import constants as CONSTANTS
 from lib.CameraAdapter import FakeCameraAdapter, CameraAdapter
 from lib.pages.CountDownPage import CountDownPage
+from lib.pages.ErrorPage import ErrorPage
 from lib.pages.PhotoReviewPage import PhotoReviewPage
 
 
-class PartyBoothController:
+class PartyBoothController(object):
     logger = logging.getLogger("PartyBooth.PartyBoothController")
 
     def __init__(self, partyBoothUI):
         self.partyBoothUI = partyBoothUI
         self.logger.debug("Initialized")
-        self.cameraController = self.createCameraController()
+        self.cameraAdapter = self.createCameraAdapter()
 
     def startCountDown(self):
         page = self.partyBoothUI.showPage(CountDownPage.__name__)
@@ -30,9 +31,13 @@ class PartyBoothController:
         return {'id': guid, 'photos': [], 'thumbs': []}
 
     def capturePhoto(self, photoset):
-        self.cameraController.takePicture(photoset)
-        frame = self.partyBoothUI.showPage(PhotoReviewPage.__name__)
-        frame.displayLastPhoto(photoset)
+        try:
+            self.cameraAdapter.takePicture(photoset)
+            frame = self.partyBoothUI.showPage(PhotoReviewPage.__name__)
+            frame.displayLastPhoto(photoset)
+        except gp.GPhoto2Error as e:
+            self.logger.error("Taking Picture failed. GPhoto2 reports " + str(e))
+            self.partyBoothUI.showPage(ErrorPage.__name__)
 
     def prepare_directory_structure(self):
         self.create_folder(CONSTANTS.CAPTURE_FOLDER)
@@ -47,7 +52,7 @@ class PartyBoothController:
             if not os.path.isdir(path):
                 raise
 
-    def createCameraController(self):
+    def createCameraAdapter(self):
         useFake = os.environ.get(CONSTANTS.ENV_USE_CAMERA_STUB)
 
         if useFake:
@@ -56,6 +61,10 @@ class PartyBoothController:
         else:
             self.logger.info("USING REAL CAMERA CONTROLLER")
             return CameraAdapter()
+
+    def setCameraAdapter(self, adapter):
+        assert isinstance(adapter, CameraAdapter)
+        self.cameraAdapter = adapter
 
     def showPage(self, frame):
         return self.partyBoothUI.showPage(frame)
@@ -68,7 +77,7 @@ class PartyBoothController:
         self.logger.info("Checking camera connection...")
 
         try:
-            self.cameraController.connectToCamera()
+            self.cameraAdapter.connectToCamera()
             self.showPage("StartPage")
         except gp.GPhoto2Error as ex:
             if ex.code == gp.GP_ERROR_MODEL_NOT_FOUND:

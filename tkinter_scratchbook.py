@@ -71,7 +71,7 @@ class Window(Frame):
     def showImage(self):
         self.countdownText.set("Processing Image...")
         self.countdownLabel.update()
-        load = Image.open(os.path.join("test", "images", "1.jpg"))
+        load = Image.open(os.path.join("tests", "images", "1.jpg"))
         print(load.format, load.size, load.mode)
         load = load.resize((700, 466), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(image=load)
