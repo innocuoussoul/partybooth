@@ -1,3 +1,4 @@
+# coding=UTF-8
 import os
 
 # Set this environment Variable to "true" in order to activate stubbing of the real gphoto2 interface
@@ -17,4 +18,7 @@ PHOTOS_FOLDER = os.path.join(PWD, "photos")
 STUB_IMAGE_FOLDER = os.path.join(PWD, "tests/images")
 
 FONT_FACE = "Roboto Condensed"
+FONT_SIZE_HUGE = 200
+FONT_SIZE_SEMI_HUGE = 150
 FONT_SIZE_BIG = 80
+FONT_SIZE_MEDIUM = 60

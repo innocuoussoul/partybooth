@@ -1,3 +1,4 @@
+# coding=UTF-8
 import Tkinter as tk
 import logging
 import os
@@ -19,7 +20,7 @@ class PhotoReviewPage(tk.Frame):
         self.imageLabel.bind("<Button-1>", lambda event: self.returnToStartPage())
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Processing...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
+                              text="Verarbeite Foto...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.pack(fill=tk.BOTH, expand=True)
 
     # TODO has to be refactored intro controller
@@ -31,7 +32,9 @@ class PhotoReviewPage(tk.Frame):
         thumb_path = os.path.join(CONSTANTS.PWD, CONSTANTS.TEMP_FOLDER, thumb_filename)
 
         self.logger.info("Creating Thumbnail " + thumb_path)
-        subprocess.check_call(['convert', photo_path, '-strip', '-thumbnail', '700', '-quality', '80', thumb_path])
+        subprocess.check_call(
+            ['convert', photo_path, '-define', 'jpeg:size=1400x920', '-strip', '-thumbnail', '800x470', '-quality',
+             '80', thumb_path])
         if os.path.isfile(thumb_path):
             photoset['thumbs'].append(thumb_path)
             self.logger.info("Added Thumbnail to Photoset " + thumb_path)

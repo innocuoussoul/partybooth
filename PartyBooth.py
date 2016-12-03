@@ -54,7 +54,7 @@ class PartyBooth(tk.Tk):
         frame = self.frames[page_name]
         frame.grid()
         self.update()
-        # frame.event_generate("<<FRAME_ACTIVATED>>")
+        frame.event_generate("<<PAGE_ACTIVATED>>")
         return frame
 
     def initializePageContainer(self):

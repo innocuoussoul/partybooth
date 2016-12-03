@@ -1,3 +1,4 @@
+# coding=UTF-8
 import Tkinter as tk
 import time
 
@@ -8,7 +9,7 @@ class CountDownPage(tk.Frame):
     COUNTDOWN_TICK_LENGTH = 1
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, width=500, height=140)
+        tk.Frame.__init__(self, parent, width=780, height=300)
         self.pack_propagate(0)
         self.controller = controller
 
@@ -18,22 +19,31 @@ class CountDownPage(tk.Frame):
         self.countdownText.set(self.countdownLength)
         self.countdownLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
                                        textvariable=self.countdownText,
-                                       font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
+                                       font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_HUGE))
 
-        self.countdownLabel.pack(fill=tk.BOTH, expand=True)
+        self.smileLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
+                                   text='Lächeln :)',
+                                   font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_SEMI_HUGE))
 
     def countDown(self):
-        self.countdownText.set("Get ready!")
-        self.countdownLabel.update()
+        self.showCountDownLabel()
         time.sleep(self.COUNTDOWN_TICK_LENGTH)
 
         counter = self.countdownLength
-        self.countdownText.set(str(counter))
         for i in range(counter):
             self.countdownText.set(str(counter - i))
             self.countdownLabel.update()
             time.sleep(self.COUNTDOWN_TICK_LENGTH)
 
-        self.countdownText.set("Smile!")
-        self.countdownLabel.update()
-        # time.sleep(self.COUNTDOWN_TICK_LENGTH)
+        self.showSmileLabel()
+
+    def showSmileLabel(self):
+        self.countdownLabel.forget()
+        self.smileLabel.pack(fill=tk.BOTH, expand=True)
+        self.update()
+
+    def showCountDownLabel(self):
+        self.smileLabel.forget()
+        self.countdownLabel.pack(fill=tk.BOTH, expand=True)
+        self.countdownText.set("Bereit?")
+        self.update()

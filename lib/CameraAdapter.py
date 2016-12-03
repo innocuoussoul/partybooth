@@ -1,3 +1,4 @@
+# coding=UTF-8
 import logging
 import os
 
@@ -5,6 +6,15 @@ import gphoto2 as gp
 
 import constants as CONSTANTS
 
+CAPTURETARGET_INTERNAL_RAM = 0
+CAPTURETARGET_MEMORY_CARD = 1
+
+IMAGEFORMAT_JPG_LARGE_FINE = 0
+IMAGEFORMAT_JPG_LARGE_NORMAL = 1
+IMAGEFORMAT_JPG_MEDIUM_FINE = 2
+IMAGEFORMAT_JPG_MEDIUM_NORMAL = 3
+IMAGEFORMAT_JPG_SMALL_FINE = 4
+IMAGEFORMAT_JPG_SMALL_NORMAL = 5
 
 class CameraAdapter(object):
     IMAGE_EXTENSION = '.jpg'
@@ -24,16 +34,20 @@ class CameraAdapter(object):
         self.logger.info("Connection successful!")
 
     def takePicture(self, photoset):
-        filename = "%s_%s.jpg" % (photoset['id'], len(photoset['photos']) + 1)
-        target_path = os.path.join(CONSTANTS.PWD, CONSTANTS.CAPTURE_FOLDER, filename)
-
         self.logger.info("Taking Photo...")
         self.camera.init(self.context)
         # subprocess.call(['gphoto2', '--capture-image-and-download', '--keep', '--force-overwrite', '--filename', target_path])
         camera_path = self.camera.capture(gp.GP_CAPTURE_IMAGE, self.context)
+        self.camera.exit(self.context)
         self.logger.info('Image on camera {0}/{1}'.format(camera_path.folder, camera_path.name))
+        photoset['camerapaths'].append(camera_path)
 
+    def transferPicture(self, photoset):
+        camera_path = photoset['camerapaths'][len(photoset['camerapaths']) - 1]
+        filename = "%s_%s.jpg" % (photoset['id'], len(photoset['photos']) + 1)
+        target_path = os.path.join(CONSTANTS.PWD, CONSTANTS.CAPTURE_FOLDER, filename)
         self.logger.debug('Copying image to {0}'.format(target_path))
+        self.camera.init(self.context)
         camera_file = self.camera.file_get(camera_path.folder, camera_path.name, gp.GP_FILE_TYPE_NORMAL, self.context)
         camera_file.save(target_path)
         self.camera.exit(self.context)
@@ -45,11 +59,11 @@ class CameraAdapter(object):
             self.logger.error("Error while taking Photo: " + target_path)
 
     def _setCaptureTargetToCard(self):
-        self._setCameraParameter('capturetarget', 1)
+        self._setCameraParameter('capturetarget', CAPTURETARGET_MEMORY_CARD)
 
     def _setImageTypeToJpg(self):
-        self._setCameraParameter('imageformat', 0)
-        self._setCameraParameter('imageformatcf', 0)
+        self._setCameraParameter('imageformat', IMAGEFORMAT_JPG_LARGE_FINE)
+        self._setCameraParameter('imageformatcf', IMAGEFORMAT_JPG_LARGE_FINE)
 
     def _setCameraParameter(self, parameter, to_value):
         # get configuration tree
@@ -83,4 +97,8 @@ class FakeCameraAdapter(CameraAdapter):
         pass
 
     def _setImageTypeToJpg(self):
+        pass
+
+    #
+    def transferPicture(self, photoset):
         pass

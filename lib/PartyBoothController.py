@@ -1,3 +1,4 @@
+# coding=UTF-8
 import logging
 import os
 import uuid
@@ -28,15 +29,17 @@ class PartyBoothController(object):
     @staticmethod
     def createPhotoset():
         guid = uuid.uuid4().hex[:16]
-        return {'id': guid, 'photos': [], 'thumbs': []}
+        return {'id': guid, 'photos': [], 'thumbs': [], 'camerapaths': []}
 
     def capturePhoto(self, photoset):
         try:
             self.cameraAdapter.takePicture(photoset)
             frame = self.partyBoothUI.showPage(PhotoReviewPage.__name__)
+            self.cameraAdapter.transferPicture(photoset)
             frame.displayLastPhoto(photoset)
         except gp.GPhoto2Error as e:
-            self.logger.error("Taking Picture failed. GPhoto2 reports " + str(e))
+            self.logger.error("Taking Picture failed")
+            self.logger.exception(e)
             self.partyBoothUI.showPage(ErrorPage.__name__)
 
     def prepare_directory_structure(self):
@@ -72,6 +75,10 @@ class PartyBoothController(object):
     def connectToCamera(self):
         frame = self.showPage("ConnectionPage")
         self.checkCameraConnection(frame)
+
+    def resetBooth(self):
+        self.cameraAdapter = self.createCameraAdapter()
+        self.connectToCamera()
 
     def checkCameraConnection(self, frame):
         self.logger.info("Checking camera connection...")
