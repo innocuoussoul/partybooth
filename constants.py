@@ -6,7 +6,7 @@ ENV_USE_CAMERA_STUB = "USE_CAMERA_STUB"
 # Do not change from here
 PWD = os.path.abspath(os.path.dirname(__file__))
 
-TITLE_FONT = ("Helvetica", 18, "bold")
+TITLE_FONT = ("Roboto Condensed", 18, "bold")
 
 CAPTURE_FOLDER = os.path.join(PWD, "captures")
 
