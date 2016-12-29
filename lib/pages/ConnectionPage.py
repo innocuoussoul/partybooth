@@ -12,6 +12,6 @@ class ConnectionPage(tk.Frame):
         self.controller = controller
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Die PartyBooth ist\ngleich startklar.\nIch bereite alles vor...",
+                              text="The PartyBooth is starting.\n Loading, Please Wait...",
                               font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_MEDIUM))
         self.label.pack(fill=tk.BOTH, expand=True)

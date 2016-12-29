@@ -22,7 +22,7 @@ class CountDownPage(tk.Frame):
                                        font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_HUGE))
 
         self.smileLabel = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                                   text='Lächeln :)',
+                                   text='Smile! :)',
                                    font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_SEMI_HUGE))
 
     def countDown(self):
@@ -45,5 +45,5 @@ class CountDownPage(tk.Frame):
     def showCountDownLabel(self):
         self.smileLabel.forget()
         self.countdownLabel.pack(fill=tk.BOTH, expand=True)
-        self.countdownText.set("Bereit?")
+        self.countdownText.set("Ready?")
         self.update()

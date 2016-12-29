@@ -16,7 +16,7 @@ class ErrorPage(tk.Frame):
         self.controller = controller
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Schade!\nIch konnte kein Foto machen\nProbieren wir es nochmal...",
+                              text="Error!\nCould not take photo.\nPlease Try Again...",
                               font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_MEDIUM))
         self.label.pack(fill=tk.BOTH, expand=True)
         self.label.bind("<Button-1>", lambda event: self.callBoothReset())

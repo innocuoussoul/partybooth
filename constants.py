@@ -2,7 +2,7 @@
 import os
 
 # Set this environment Variable to "true" in order to activate stubbing of the real gphoto2 interface
-ENV_USE_CAMERA_STUB = "USE_CAMERA_STUB"
+ENV_USE_CAMERA_STUB = True
 
 # Do not change from here
 PWD = os.path.abspath(os.path.dirname(__file__))

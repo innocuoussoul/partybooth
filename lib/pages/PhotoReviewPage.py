@@ -20,7 +20,7 @@ class PhotoReviewPage(tk.Frame):
         self.imageLabel.bind("<Button-1>", lambda event: self.returnToStartPage())
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Verarbeite Foto...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
+                              text="Processing Photo...", font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.pack(fill=tk.BOTH, expand=True)
 
     # TODO has to be refactored intro controller

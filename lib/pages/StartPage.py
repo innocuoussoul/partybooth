@@ -12,7 +12,7 @@ class StartPage(tk.Frame):
         self.controller = controller
 
         self.label = tk.Label(self, fg='white', bg='red', borderwidth=10,
-                              text="Tippe hier für \nnächstes Foto",
+                              text="Click Here \nto Take Photo",
                               font=(CONSTANTS.FONT_FACE, CONSTANTS.FONT_SIZE_BIG))
         self.label.bind("<Button-1>", lambda event: self.controller.startCountDown())
         self.label.pack(fill=tk.BOTH, expand=True)
